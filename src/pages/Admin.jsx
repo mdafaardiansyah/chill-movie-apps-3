@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import movieService from '../services/api/movieService';
+import apiClient from '../services/api/index';
 import { MOVIE_GENRES } from '../data';
 import '../styles/admin.css';
 
@@ -34,6 +35,8 @@ const Admin = () => {
   const fetchMovies = async () => {
     try {
       setLoading(true);
+      // Invalidasi cache untuk memastikan data terbaru
+      apiClient.invalidateCache(movieService.getAllMovies.getCacheKey());
       const data = await movieService.getAllMovies();
       setMovies(data);
       setError(null);
@@ -94,20 +97,15 @@ const Admin = () => {
         // Update film yang sudah ada
         result = await movieService.updateMovie(selectedMovie.id, movieData);
         alert(`Film "${result.title}" berhasil diperbarui`);
-        
-        // Perbarui film dalam state movies langsung
-        setMovies(prevMovies => prevMovies.map(movie => 
-          movie.id === selectedMovie.id ? result : movie
-        ));
       } else {
         // Tambah film baru
         result = await movieService.addMovie(movieData);
         alert(`Film "${result.title}" berhasil ditambahkan`);
-        
-        // Tambahkan film baru ke state movies langsung
-        setMovies(prevMovies => [...prevMovies, result]);
       }
 
+      // Ambil data terbaru dari server setelah operasi berhasil
+      await fetchMovies();
+      
       // Reset form
       resetForm();
     } catch (err) {
@@ -145,7 +143,8 @@ const Admin = () => {
         setLoading(true);
         await movieService.deleteMovie(id);
         alert(`Film "${title}" berhasil dihapus`);
-        fetchMovies();
+        // Invalidasi cache dan ambil data terbaru
+        await fetchMovies();
       } catch (err) {
         console.error('Error deleting movie:', err);
         setError(`Gagal menghapus film: ${err.message}`);
