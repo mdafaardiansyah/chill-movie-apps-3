@@ -1,4 +1,4 @@
-# Chill Movie Apps - V2.1.0
+# Chill Movie Apps - V3.0.0
 
 ![Chill Movie Apps Logo](/src/assets/images/logo/LogoWithBG.png)
 
@@ -112,7 +112,7 @@ Aplikasi ini memiliki beberapa rute navigasi utama:
 
 1. Clone repositori ini
    ```bash
-   git clone https://github.com/mdafaardiansyah/chill-apps-reactjs-1.git
+   git clone https://github.com/mdafaardiansyah/chill-movie-apps-3.git-1.git
 
    cd chill-movie-apps
    ```
@@ -142,7 +142,7 @@ Aplikasi ini memiliki beberapa rute navigasi utama:
 
 2. Clone repositori ini
    ```bash
-   git clone https://github.com/mdafaardiansyah/chill-apps-reactjs-1.git
+   git clone https://github.com/mdafaardiansyah/chill-movie-apps-3.git-1.git
    cd chill-movie-apps
    ```
 
