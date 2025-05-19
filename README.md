@@ -1,4 +1,4 @@
-# Chill Movie Apps - V2.0.0
+# Chill Movie Apps - V2.1.0
 
 ![Chill Movie Apps Logo](/src/assets/images/logo/LogoWithBG.png)
 
@@ -14,9 +14,12 @@ Chill Movie Apps adalah aplikasi streaming film berbasis web yang memungkinkan p
 - **Responsif**: Tampilan yang optimal di berbagai perangkat (desktop, tablet, mobile)
 - **Manajemen Film Favorit**: Pengguna dapat menambahkan, mengedit, dan menghapus film favorit mereka
 - **Watchlist Manager**: Fitur untuk mengelola daftar film yang ingin ditonton
-- **Penyimpanan Lokal**: Data film favorit dan watchlist disimpan di localStorage untuk persistensi data
+- **Integrasi API Eksternal**: Menggunakan API eksternal untuk mendapatkan data film terbaru
+- **Format Poster Ganda**: Mendukung tampilan poster dalam format landscape dan portrait
 - **Dropdown Genre**: Navigasi genre film yang mudah diakses melalui dropdown menu
 - **Profil Pengguna**: Dropdown menu untuk akses cepat ke pengaturan profil dan logout
+- **Berbagi Film**: Fitur untuk berbagi film favorit dengan teman melalui berbagai platform
+- **Admin Panel**: Panel admin untuk mengelola konten film (menambah, mengedit, menghapus film)
 
 ## Rute Navigasi
 
@@ -42,6 +45,18 @@ Aplikasi ini memiliki beberapa rute navigasi utama:
    - Fitur watchlist untuk mengelola film yang ingin ditonton
    - Pengguna dapat menambah, mengedit, dan menghapus film dari daftar
 
+5. **Halaman Favorites** (`/favorites`)
+   - Menampilkan daftar film favorit pengguna yang disimpan
+   - Pengguna dapat mengelola film favorit mereka
+
+6. **Halaman Watchlist** (`/watchlist`)
+   - Menampilkan daftar film yang ingin ditonton
+   - Pengguna dapat menandai film sebagai sudah ditonton
+
+7. **Halaman Admin** (`/admin`)
+   - Panel admin untuk mengelola konten film
+   - Menambah, mengedit, dan menghapus film dari database
+
 ## Teknologi yang Digunakan
 
 ### Frontend
@@ -49,10 +64,11 @@ Aplikasi ini memiliki beberapa rute navigasi utama:
 - **Routing**: React Router DOM 7.5
 - **Build Tool**: Vite 6.2
 - **Linting**: ESLint 9.21
+- **API Integration**: Axios untuk konsumsi API eksternal
 
 ### DevOps & Deployment
 - **Containerization**: Docker
-- **CI/CD**: Jenkins
+- **CI/CD**: Jenkins dengan integrasi ENVIRONEMT VARIABLES
 - **Orchestration**: Docker Compose
 - **Web Server**: Nginx
 - **Notifikasi**: Discord Webhook
@@ -73,11 +89,20 @@ Aplikasi ini memiliki beberapa rute navigasi utama:
 │   ├── components/      # Komponen React yang dapat digunakan kembali
 │   │   ├── auth/        # Komponen terkait autentikasi
 │   │   ├── home/        # Komponen untuk halaman beranda
+│   │   ├── movie/       # Komponen terkait detail film
 │   │   └── layout/      # Komponen layout (header, footer)
 │   ├── pages/           # Halaman utama aplikasi
+│   ├── services/        # Layanan API dan penyimpanan
+│   │   ├── api/         # Konfigurasi dan layanan API
+│   │   └── storageService.js # Layanan penyimpanan lokal
+│   ├── contexts/        # Context API untuk state global
+│   ├── hooks/           # Custom hooks
+│   ├── data/            # Data statis dan konstanta
 │   ├── styles/          # File CSS global
+│   ├── assets/          # Aset statis (gambar, ikon)
 │   ├── App.jsx          # Komponen utama aplikasi
 │   └── main.jsx         # Entry point aplikasi
+├── .env                 # Variabel lingkungan
 └── index.html           # File HTML utama
 ```
 
@@ -97,12 +122,19 @@ Aplikasi ini memiliki beberapa rute navigasi utama:
    npm install
    ```
 
-3. Jalankan aplikasi dalam mode development
+3. Konfigurasi variabel lingkungan
+   - Buat file `.env` di root proyek
+   - Tambahkan konfigurasi API URL:
+     ```
+     VITE_API_URL=https://68256e930f0188d7e72cf3e0.mockapi.io/api/v1
+     ```
+
+4. Jalankan aplikasi dalam mode development
    ```bash
    npm run dev
    ```
 
-4. Buka browser dan akses `http://localhost:5173`
+5. Buka browser dan akses `http://localhost:5173`
 
 ### Menjalankan dengan Docker Compose
 
@@ -119,7 +151,7 @@ Aplikasi ini memiliki beberapa rute navigasi utama:
    docker compose up -d
    ```
 
-4. Buka browser dan akses `http://localhost:3001`
+4. Buka browser dan akses `http://localhost:3004`
 
 ## Deployment
 
@@ -133,7 +165,7 @@ Aplikasi ini menggunakan arsitektur deployment sebagai berikut:
    - Checkout kode dari repository
    - Install dependencies
    - Linting dan security scan
-   - Build aplikasi
+   - Build aplikasi dengan variabel lingkungan VITE_API_URL
    - Build dan push Docker image
    - Deploy ke server
    - Smoke test
@@ -141,14 +173,15 @@ Aplikasi ini menggunakan arsitektur deployment sebagai berikut:
 2. **Containerization dengan Docker**:
    - Multi-stage build untuk optimasi ukuran image
    - Nginx sebagai web server di dalam container
+   - Konfigurasi variabel lingkungan melalui build arguments
 
 3. **Orchestration dengan Docker Compose**:
-   - Menjalankan container aplikasi
+   - Menjalankan container aplikasi pada port 3004
    - Konfigurasi jaringan
    - Health check
 
 4. **Reverse Proxy dengan Nginx**:
-   - Mengatur routing ke aplikasi
+   - Mengatur routing ke aplikasi pada port 3004
    - SSL/TLS termination
    - Caching statis
 
@@ -168,6 +201,14 @@ Aplikasi yang sudah di-deploy dapat diakses melalui URL berikut:
    https://hsba1b-chill.glanze.site/register
 
    https://hsba1b-chill.glanze.site/home
+
+   https://hsba1b-chill.glanze.site/mylist
+
+   https://hsba1b-chill.glanze.site/favorites
+
+   https://hsba1b-chill.glanze.site/watchlist
+
+   https://hsba1b-chill.glanze.site/admin
    ```
 
 ## Fitur Interaktif
@@ -177,14 +218,25 @@ Pengguna dapat mengelola daftar film favorit mereka dengan fitur-fitur berikut:
 - Menambahkan film baru ke daftar favorit dengan judul, genre, dan rating
 - Mengedit informasi film yang sudah ada
 - Menghapus film dari daftar favorit
-- Data film favorit disimpan di localStorage untuk persistensi data
+- Integrasi dengan API untuk menyimpan data favorit pengguna
 
 ### Watchlist Manager
 Fitur untuk mengelola daftar film yang ingin ditonton:
 - Menambahkan film ke watchlist dengan judul dan status (ditonton/belum ditonton)
 - Mengubah status film dalam watchlist
 - Menghapus film dari watchlist
-- Data watchlist disimpan di localStorage untuk persistensi data
+- Integrasi dengan API untuk menyimpan data watchlist pengguna
+
+### Format Poster Ganda
+Aplikasi mendukung dua format poster untuk pengalaman pengguna yang lebih baik:
+- Format portrait (200x300) untuk tampilan daftar film
+- Format landscape untuk tampilan carousel dan hero section
+
+### Berbagi Film
+Pengguna dapat berbagi film favorit mereka melalui:
+- Media sosial (Facebook, Twitter, dll.)
+- Email
+- Tautan langsung
 
 ### Dropdown Menu Profil
 Menu dropdown pada header aplikasi yang memberikan akses cepat ke:
