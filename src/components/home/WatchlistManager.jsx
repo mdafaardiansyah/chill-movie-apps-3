@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import addIcon from '../../assets/images/icons/plus.png';
 import deleteIcon from '../../assets/images/icons/delete.png';
 import checkIcon from '../../assets/images/icons/check.png';
@@ -17,7 +17,7 @@ const WatchlistManager = ({ onNotification }) => {
   }, [fetchWatchlist]);
 
   // Fungsi untuk mengambil data watchlist
-  const fetchWatchlist = async () => {
+  const fetchWatchlist = useCallback(async () => {
     try {
       setIsLoading(true);
       // Menggunakan userId '1' untuk demo
@@ -32,7 +32,7 @@ const WatchlistManager = ({ onNotification }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [onNotification]);
 
   // State untuk form penambahan film
   const [newMovieTitle, setNewMovieTitle] = useState('');

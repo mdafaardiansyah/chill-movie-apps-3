@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import addIcon from '../../assets/images/icons/plus.png';
 import deleteIcon from '../../assets/images/icons/delete.png';
@@ -48,7 +48,7 @@ const MovieList = ({
   }, [propMovies, fetchFavorites]);
 
   // Fungsi untuk mengambil data film favorit
-  const fetchFavorites = async () => {
+  const fetchFavorites = useCallback(async () => {
     try {
       setLoading(true);
       // Gunakan userId='1' sebagai default untuk demo
@@ -63,7 +63,7 @@ const MovieList = ({
         onNotification('Gagal memuat daftar film favorit', 'error');
       }
     }
-  };
+  }, [onNotification]);
 
   // Fungsi untuk menyegarkan data
   const refreshData = async () => {

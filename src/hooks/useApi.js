@@ -8,7 +8,7 @@ import apiClient from '../services/api/index';
  * @param {Object} options - Opsi tambahan untuk konfigurasi hook
  * @returns {Object} Object yang berisi data, loading state, error, dan fungsi refresh
  */
-export const useApi = (apiFunction, dependencies = [], options = {}) => {
+export const useApi = (apiFunction, options = {}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
