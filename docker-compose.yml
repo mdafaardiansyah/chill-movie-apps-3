@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  chill-movie-app-2: #[=== Change It ===]
+    image: ardidafa/chill-movie-apps-3:latest #[=== Change It ===]
+    container_name: chill-movie-app-3 #[=== Change It ===]
+    restart: unless-stopped
+    ports:
+      - "3004:80"  # Menghindari konflik dengan Nginx di host yang menggunakan port 80 [=== Change It ===]
+    networks:
+      - web
+    environment:
+      - NODE_ENV=production
+
+networks:
+  web:
+    driver: bridge
