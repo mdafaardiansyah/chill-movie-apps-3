@@ -13,8 +13,7 @@ const MovieDetail = () => {
   const { 
     data: movie, 
     loading, 
-    error, 
-    refresh 
+    error 
   } = useApi(() => movieService.getMovieById(id), [id]);
   
   // State untuk status favorit dan watchlist

@@ -16,7 +16,6 @@ export const useApi = (apiFunction, dependencies = [], options = {}) => {
   
   // Opsi default
   const {
-    useCache = true,         // Gunakan cache jika tersedia
     maxRetries = 3,          // Jumlah maksimal percobaan ulang
     retryDelay = 1000,       // Delay dasar untuk retry (dalam ms)
     showRateLimitMessage = true // Tampilkan pesan rate limit
@@ -102,7 +101,7 @@ export const useApi = (apiFunction, dependencies = [], options = {}) => {
   // Panggil API saat komponen dimount atau dependencies berubah
   useEffect(() => {
     fetchData(false); // Gunakan cache jika tersedia
-  }, [...dependencies, fetchData]);
+  }, [fetchData]); // Menghapus spread dependencies untuk menghindari warning
 
   // Fungsi untuk memuat ulang data
   const refresh = useCallback((forceRefresh = true) => {

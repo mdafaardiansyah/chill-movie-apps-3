@@ -45,7 +45,7 @@ const MovieList = ({
 
     // Jika tidak, ambil dari API
     fetchFavorites();
-  }, [propMovies]);
+  }, [propMovies, fetchFavorites]);
 
   // Fungsi untuk mengambil data film favorit
   const fetchFavorites = async () => {

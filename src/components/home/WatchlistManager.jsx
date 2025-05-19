@@ -14,7 +14,7 @@ const WatchlistManager = ({ onNotification }) => {
   // Mengambil data watchlist dari API saat komponen dimuat
   useEffect(() => {
     fetchWatchlist();
-  }, []);
+  }, [fetchWatchlist]);
 
   // Fungsi untuk mengambil data watchlist
   const fetchWatchlist = async () => {

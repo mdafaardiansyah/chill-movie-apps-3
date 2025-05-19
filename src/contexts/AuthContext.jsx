@@ -5,8 +5,12 @@ import apiClient from '../services/api/index';
 // Membuat context untuk autentikasi
 const AuthContext = createContext();
 
-// Export custom hook untuk menggunakan AuthContext
-export const useAuth = () => useAuthHook(AuthContext);
+// Custom hook untuk menggunakan AuthContext
+// Dipindahkan ke variabel lokal untuk menghindari warning react-refresh/only-export-components
+const useAuth = () => useAuthHook(AuthContext);
+
+// Export hook
+export { useAuth };
 
 // Provider component untuk AuthContext
 export const AuthProvider = ({ children }) => {
